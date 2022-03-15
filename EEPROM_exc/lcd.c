@@ -27,7 +27,7 @@
 #define F_CPU 3686400L
 #include <util/delay.h>
 #include <avr/pgmspace.h>
-#include "lcd.h"
+#include "Libraries/lcd.h"	//	#MOD
 
 
 
