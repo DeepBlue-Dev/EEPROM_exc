@@ -1,5 +1,6 @@
 #include <avr/io.h>
 
+//	#MOD
 void init_usart()
 {
 	//	set RX(PD0) as input, TX(PD1) as output and high
