@@ -18,8 +18,14 @@ int main(void)
 {
     lcd_init(LCD_DISP_ON);
 	init_usart();
+
+	lcd_puts("VTI Waregem");
     while (1) 
     {
     }
+}
+
+ISR(USART0_RX_vect){
+
 }
 

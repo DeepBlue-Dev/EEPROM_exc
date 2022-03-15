@@ -2,18 +2,27 @@
 
 void init_usart()
 {
-//Info USART0 voor Atmega324P
-//Aansluitingen RXD0 - PD0 - Pin 14; TXD0 - PD1 - Pin 15
-//UDR0 = Dataregister
-//UCSR0A = USART0 Control and Status Register A
-//UCSR0B = USART0 Control and Status Register B
-//UCSR0C = USART0 Control and Status Register C
-//UBRR0L and UBRR0H = USART0 Baud Rate Registers
-
-UBRR0H = 0; 
-UBRR0L = 23; //9600 bps, UBRR=23 en U2X=0 (normal snelheid)
-UCSR0B = (1<<RXEN0) | (1<<TXEN0); // activeren van ontvanger en zender
-//UCSR0C default ; // USART, asynchroon, 8 databits, geen pariteit en 1 stop bit
+	//	set RX(PD0) as input, TX(PD1) as output and high
+	DDRD &= ~(1 << DDRD0);
+	DDRD |= (1 << DDRD1);
+	PORTD |= (1 << PORTD1);
+	//	normal speed
+	UCSR0A &= ~(1 << U2X0);
+	//	set baud rate to 9600 (23 for the register)
+	UBRR0 = 23;
+	//	mode select: asynchronous USART
+	UCSR0C &= ~((1 << UMSEL00) | (1 << UMSEL01));
+	//	No parity
+	UCSR0C &= ~((1 << UPM00) | (1 << UPM01));
+	//	1 stop bit
+	UCSR0C &= ~(1 << USBS0);
+	//	8 databits
+	UCSR0B &= ~(1 << UCSZ02);
+	UCSR0C |=((1 << UCSZ00) | (1 << UCSZ01));
+	//	we want to trigger an interrupt when the receive buffer is full
+	UCSR0B |= (1 << RXCIE0);
+	//	enable receive and transmit port
+	UCSR0B |= ((1 << RXEN0) | (1 << TXEN0));
 }
 
 char isCharAvailable()
